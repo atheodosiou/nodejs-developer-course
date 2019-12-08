@@ -2,7 +2,10 @@ const path = require("path");
 const http = require("http");
 const express = require("express");
 const socketio = require("socket.io");
-const { generateMessage } = require("./utils/messages");
+const {
+  generateMessage,
+  generateLocationMessage
+} = require("./utils/messages");
 
 //Used to filter bad words from messagees send via the chat!
 const Filter = require("bad-words");
@@ -40,7 +43,9 @@ io.on("connection", socket => {
   socket.on("sendLocation", (coords, callback) => {
     io.emit(
       "locationMessage",
-      `https://google.com/maps?q=${coords.latitude},${coords.longitude}`
+      generateLocationMessage(
+        `https://google.com/maps?q=${coords.latitude},${coords.longitude}`
+      )
     );
     callback();
   });
